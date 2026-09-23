@@ -1,0 +1,75 @@
+﻿trecho_id,municipio_id,trecho_nome,trecho_descricao,estacao,latitude,longitude,periodicidade,fonte,excluido
+1,1,Barra do Guajú,Em frente a desembocadura do Rio Guajú,01.01,-6.490567,-34.968033,2,0,0
+2,1,Pavuna,Em frente a Lagoa da Pavuna,01.00,-6.544061,-34.966836,2,0,0
+3,1,Baleia,No final do acesso à praia da Rua Valfredo Medeiros,01.01 A,-6.595639,-34.966328,2,0,0
+4,1,Barra de Caramatuba,Foz do Rio Camaratuba,01.02,-6.602053,-34.965825,2,0,0
+5,2,Tambá,Final do acesso à praia na Aldeia Galego,02.00 A,-6.664375,-34.956633,2,0,0
+6,2,Praia do Forte,No final da Rua Don Pedro II,02.01,-6.673269,-34.953075,2,0,0
+7,2,Baía da Traição,No final da Rua Siqueira Campos,02.02,-6.690575,-34.93105,2,0,0
+8,2,Trincheiras,No final da Rua José Edmilson de Medeiros,02.03,-6.688117,-34.93385,2,0,0
+9,2,Acajutibiró,No final da Rua Projetada Seis,02.04,-6.698014,-34.933919,2,0,0
+10,3,Barra de Mamanguape,Foz do rio Mamanguape,03.01,-6.796031,-34.915236,2,0,0
+11,3,Campina,No final da PB 008,03.02,-6.812125,-34.913639,2,0,0
+12,3,Oiteiro,Trechos próximos a foz do Rio Miriri,03.03,-6.833336,-34.909958,2,0,0
+13,4,Bonsucesso,No final da RUA MARIANO DE SOUZA FALCÃO,04.00,-6.887369,-34.884367,1,0,0
+14,4,Lucena,Em frente a desembocadura do Riacho Bonsucesso,04.01,-6.893967,-34.875847,1,0,0
+15,4,Ponta de Lucena,Na desembocadura da Camboa em Ponta de Lucena,04.01 A,-6.899897,-34.8616,1,0,0
+16,4,Gameleira,Em frente a desembocadura do Riacho Araçá,04.01 B,-6.920944,-34.863708,1,0,0
+17,4,Fagundes,No final da Travessa São José,04.01 C,-6.9392,-34.865736,1,0,0
+18,4,Costinha,No final da Rua Ubiratan Galvão,04.02,-6.964906,-34.855286,1,0,0
+20,5,Miramar,No final da Av. Cassiano da Cunha Nóbrega,05.01,-6.964803,-34.833839,1,0,0
+21,5,Ponta de Mato,No final da Rua Nossa senhora dos Navegantes,05.02,-6.971361,-34.828506,1,0,0
+22,5,Formosa,No final da Rua Monsenhor José Coutinho da silva,05.02 A,-6.978947,-34.827603,1,0,0
+23,5,Areia Dourada,No final da Rua Projetada,05.02 B,-6.995175,-34.8265,1,0,0
+24,5,Camboinha,No final da Rua Benício de Oliveira,05.03,-7.0129,-34.827728,1,0,0
+25,5,Poço,No final da Rua Santa Cavalcante,05.04,-7.025753,-34.829764,1,0,0
+26,5,Ponta de Campina,Em frente a galeria de águas pluviais,05.04 A,-7.032272,-34.831042,1,0,0
+27,5,Galeria Dr. Abel Beltrão,RUA DR. ABEL BELTRÃO,B1,-7.076567,-34.829906,1,1,0
+28,5,Intermares,Em frente ao Maceió de intermares,05.05,-7.045678,-34.840808,1,0,0
+29,5,Maceió Intermares,VIA LITORÂNEA PRESIDENTE AFONSO PENA,F1,-7.056792,-34.84365,1,1,0
+30,6,Bessa I,Em frente a desembocadura do Maceió do Bessa,06.01,-7.065749,-34.839022,1,0,0
+31,6,Maceió do Bessa,RUA WILSON RIBEIRO DE MORAES,F2,-7.071125,-34.834283,1,1,0
+32,6,Bessa,Rua Severino Nicolau de Melo,06.01.1,-7.07479,-34.829475,1,0,0
+33,6,Bessa II,Final da Av. Gov. Flávio Ribeiro Coutinho,06.01 A,-7.0947,-34.833167,1,0,0
+34,6,Manaíra (Quadra),Em frente a quadra de Manaíra,06.02 B,-7.105142,-34.828158,1,0,0
+35,6,Manaíra (Residencia 1461),Em frente ao N° 1461 da Av. João Maurício,06.02 B3,-7.099458,-34.831922,1,0,0
+36,6,Manaíra (Barramas),No final da AVENIDA SENADOR RUY CARNEIRO,06.02 C,-7.109472,-34.823375,1,0,0
+37,6,Manaíra (Verde mar pousada),Em frente ao N° 315 da Av. João Maurício,06.02 C1,-7.107653,-34.825578,1,0,0
+38,6,Tambaú Busto,Em frente ao busto de Tamandaré,06.03 A,-7.119247,-34.822478,1,0,0
+39,6,Cabo Branco I,No final da AVENIDA MONSENHOR ODILON COUTINHO,06.04 A,-7.124681,-34.822658,1,0,0
+40,6,Cabo Branco - II,No final da Rua Gregorio Pessoa de Oliveira,06.04 1A,-7.134117,-34.819814,1,0,0
+41,6,Galeria Cabo Branco II (Bar do Cuscuz),RUA GREGORIO PESSOA OLIVEIRA ARAUJO,N0,-7.136436,-34.819175,1,1,0
+42,6,Cabo Branco III,No final da RUA ÁUREA,06.04 B,-7.140836,-34.814969,1,0,0
+43,6,Cabo Branco IV,Em frente a rotatória do Cabo Branco,06.04 C,-7.145464,-34.809133,1,0,0
+44,6,Farol do Cabo Branco,Em frente a galeria de águas pluviais,06.05A,-7.151269,-34.794978,1,0,0
+45,6,Seixas,No final da Av. das Falésias,06.05,-7.154367,-34.793389,1,0,0
+46,6,Penha I,Em frente a desembocadura do Rio Cabelo,06.06,-7.160344,-34.794881,1,0,0
+47,6,Rio Cabelo,AVENIDA DAS FALÉSIAS,F3,-7.162775,-34.795592,1,1,0
+48,6,Penha II,Em frente a desembocadura do Rio Aratu,06.06 A,-7.169486,-34.795486,1,0,0
+49,6,Rio Aratú,AVENIDA PANORÂMICA,N1,-7.175047,-34.796136,1,1,0
+50,6,Jacarapé,Ao final da RUA MANOEL CANDIDO SOARES,06.07 A,-7.199067,-34.797683,1,0,0
+51,6,Rio Jacarapé,RUA ALBERTO JORGE RUFFO,N2,-7.196361,-34.796067,1,1,0
+53,6,Rio Cuiá,RIO CUIÁ,F4,-7.207406,-34.802644,1,1,0
+54,6,Do Sol,Em frente a desembocadura do Riacho Camurupim,06.08,-7.215975,-34.803767,1,0,0
+55,6,Riacho Camurupim,RUA GEOVANE DE SOUZA CAVALCANTI,N3,-7.216836,-34.804286,1,1,0
+56,6,Barra de Gramame,Em frente a desembocadura do Rio Gramame,06.09,-7.237739,-34.805136,1,0,0
+57,6,Rio Gramame,RIO GRAMAME,F5,-7.237692,-34.806258,1,1,0
+58,7,Do Amor,Em frente a desembocadura do Rio Gurugi,07.00 A,-7.273992,-34.801889,1,0,0
+59,7,Jacumã,Em frente a desembocadura do maceió de Jacumã,07.01,-7.285697,-34.800153,1,0,0
+60,7,Maceió de Jacumã,AVENIDA BEIRA MAR,N4,-7.291597,-34.801522,2,1,0
+61,7,Carapibus,No final da Rua Maria Carmelita Vasconselos,07.00,-7.297217,-34.801081,1,0,0
+62,7,Tabatinga,Em frente a desembocadura do Maceió Bucatu,07.01 A,-7.308783,-34.801214,1,0,0
+64,7,Coqueirinho do Sul,Enseada de Coqueirinho,07.02,-7.330114,-34.795078,1,0,0
+65,7,Tambaba,Pedra do coqueiro de Tambaba,07.03,-7.365144,-34.797706,1,0,0
+66,7,Barra do Grau,Foz do Rio Graú,07.04,-7.388864,-34.802889,1,0,0
+67,8,Bela,Em frente ao Maceió de Praia Bela,08.00 A,-7.397969,-34.804111,1,0,0
+68,8,Maceió da Praia Bela,MACEIÓ DA PRAIA BELA,N5,-7.398539,-34.804756,1,1,0
+69,8,Barra do Abiaí,Foz do Rio Abiaí,08.00 B,-7.424678,-34.807931,1,0,0
+70,8,Pitimbú,No final da RUA DA PAZ,08.00,-7.471139,-34.80425,1,0,0
+71,8,Maceió,Em frente a desembocadura do riacho Engenho Velho,08.01,-7.477711,-34.808956,1,0,0
+72,8,Riacho Eng. Velho,AVENIDA BEIRA MAR,F6,-7.476397,-34.809075,1,1,0
+73,8,Guarita,Em frente a desembocadura da Lagoa,08.02,-7.484214,-34.812419,1,0,0
+74,8,Azul/Santa Rita,Em frente as galerias de águas pluviais,08.03,-7.510172,-34.809264,1,0,0
+75,8,Coqueiros,No final da Rua Almirante Tamandaré,08.04,-7.524203,-34.817161,1,0,0
+76,8,Ponta dos Coqueiros,Em frente a desembocadura da Lagoa,08.04 A,-7.536914,-34.822531,1,0,0
+77,8,Acaú/Pontinha,Em frente a desembocadura do Rio Goiana,08.05,-7.548439,-34.830778,1,0,0

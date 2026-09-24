@@ -1,10 +1,8 @@
-import sqlite3
-from pathlib import Path
-
 import folium
 import pandas as pd
 import streamlit as st
 from streamlit_folium import st_folium
+from database import (carregar_classificacao, carregar_analises, carregar_mapa)
 
 
 # CONFIGURAÇÃO
@@ -19,60 +17,10 @@ st.caption(
     "com análise geográfica, temporal e classificação."
 )
 
-# BANCO DE DADOS
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-DB_PATH = BASE_DIR / "balneabilidade.db"
-
-
-@st.cache_resource
-def conectar_banco():
-    return sqlite3.connect(DB_PATH, check_same_thread=False)
-
-
-conn = conectar_banco()
-
-# CARREGAMENTO
-@st.cache_data
-def carregar_classificacao():
-    query = """
-        SELECT *
-        FROM classificacao_trechos
-        ORDER BY trecho_id
-    """
-
-    return pd.read_sql_query(query, conn)
-
-
-@st.cache_data
-def carregar_analises():
-    query = """
-        SELECT
-            a.analise_id,
-            a.trecho_id,
-            a.analise_data,
-            a.quantitativo,
-            t.trecho_nome,
-            t.latitude,
-            t.longitude,
-            m.municipio_id,
-            m.municipio_nome
-        FROM analises AS a
-        INNER JOIN trechos AS t
-            ON a.trecho_id = t.trecho_id
-        INNER JOIN municipios AS m
-            ON t.municipio_id = m.municipio_id
-        WHERE t.excluido = 0
-        ORDER BY a.analise_data
-    """
-
-    df = pd.read_sql_query(query, conn)
-    df["analise_data"] = pd.to_datetime(df["analise_data"])
-
-    return df
-
-
+# CONECTAR COM A BASE
 df_classificacao = carregar_classificacao()
 df_analises = carregar_analises()
+df_mapa = carregar_mapa()
 
 # FILTROS
 st.subheader("Filtros")
@@ -257,22 +205,6 @@ if not distribuicao.empty:
 
 # MAPA
 st.subheader("Mapa dos trechos")
-
-query_mapa = """
-    SELECT
-        t.trecho_id,
-        t.trecho_nome,
-        t.latitude,
-        t.longitude,
-        m.municipio_nome
-    FROM trechos AS t
-    INNER JOIN municipios AS m
-        ON t.municipio_id = m.municipio_id
-    WHERE t.excluido = 0
-"""
-
-df_mapa = pd.read_sql_query(query_mapa, conn)
-
 
 # Aplicar filtro de município
 if municipio != "Todos":

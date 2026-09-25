@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from database import carregar_classificacao, carregar_analises
+from database import (carregar_classificacao, carregar_analises, carregar_classificacao_historica)
 
 
 st.set_page_config(
@@ -20,6 +20,7 @@ st.caption(
 # CARREGAMENTO
 df_classificacao = carregar_classificacao()
 df_analises = carregar_analises()
+df_historica = carregar_classificacao_historica()
 
 
 # FILTROS
@@ -144,16 +145,44 @@ df_view = df_view.merge(
     how="left"
 )
 
+df_view = df_view.rename(
+    columns={
+        "classificacao": "classificacao_atual"
+    }
+)
 
+
+# CLASSIFICAÇÃO NO MOMENTO DA ANÁLISE
+df_view = df_view.merge(
+    df_historica[
+        [
+            "analise_referencia_id",
+            "classificacao"
+        ]
+    ],
+    left_on="analise_id",
+    right_on="analise_referencia_id",
+    how="left"
+)
+
+df_view = df_view.rename(
+    columns={
+        "classificacao": "classificacao_no_momento"
+    }
+)
+
+
+# FILTRO DE CLASSIFICAÇÃO ATUAL
 if classificacao != "Todos":
 
     df_view = df_view[
-        df_view["classificacao"] == classificacao
+        df_view["classificacao_atual"] == classificacao
     ]
 
 
 # TABELA
 st.subheader("Resultados")
+
 
 if df_view.empty:
 
@@ -167,9 +196,10 @@ else:
         [
             "municipio_nome",
             "trecho_nome",
-            "classificacao",
             "analise_data",
             "quantitativo",
+            "classificacao_no_momento",
+            "classificacao_atual",
         ]
     ].copy()
 
@@ -177,9 +207,10 @@ else:
         columns={
             "municipio_nome": "Município",
             "trecho_nome": "Trecho",
-            "classificacao": "Classificação Atual",
             "analise_data": "Data da análise",
             "quantitativo": "Quantitativo",
+            "classificacao_no_momento": "Classificação no momento",
+            "classificacao_atual": "Classificação atual",
         }
     )
 

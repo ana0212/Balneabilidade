@@ -77,3 +77,16 @@ def carregar_mapa():
     """
 
     return pd.read_sql_query(query, conn)
+
+# FUNCAO PARA CARREGAR A CLASSIFICACAO HISTORICA
+@st.cache_data
+def carregar_classificacao_historica():
+    conn = conectar_banco()
+
+    query = """
+        SELECT *
+        FROM classificacao_historica
+        ORDER BY trecho_id, data_referencia
+    """
+
+    return pd.read_sql_query(query, conn)

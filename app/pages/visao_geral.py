@@ -2,7 +2,9 @@ import folium
 import pandas as pd
 import streamlit as st
 from streamlit_folium import st_folium
-from database import (carregar_classificacao, carregar_analises, carregar_mapa)
+import plotly.express as px
+from database import (carregar_classificacao, carregar_analises, 
+                      carregar_classificacao_historica, carregar_mapa)
 
 
 # CONFIGURAÇÃO
@@ -21,6 +23,7 @@ st.caption(
 df_classificacao = carregar_classificacao()
 df_analises = carregar_analises()
 df_mapa = carregar_mapa()
+df_historica = carregar_classificacao_historica()
 
 # FILTROS
 st.subheader("Filtros")
@@ -106,6 +109,24 @@ st.caption(
 # APLICAÇÃO DOS FILTROS
 df_view = df_classificacao.copy()
 df_analises_view = df_analises.copy()
+
+df_analises_view = df_analises_view.merge(
+    df_historica[
+        [
+            "analise_referencia_id",
+            "classificacao",
+        ]
+    ],
+    left_on="analise_id",
+    right_on="analise_referencia_id",
+    how="left",
+)
+
+df_analises_view = df_analises_view.rename(
+    columns={
+        "classificacao": "classificacao_no_momento"
+    }
+)
 
 
 if municipio != "Todos":
@@ -357,7 +378,7 @@ else:
         "Não há coordenadas disponíveis para os filtros selecionados."
     )
 
-# EVOLUÇÃO TEMPORAL
+# EVOLUCAO TEMPORAL
 st.subheader("Evolução do quantitativo")
 
 if trecho == "Todos":
@@ -372,18 +393,65 @@ else:
     serie = (
         df_analises_view
         .sort_values("analise_data")
-        [["analise_data", "quantitativo"]]
-        .set_index("analise_data")
+        [
+            [
+                "analise_data",
+                "quantitativo",
+                "classificacao_no_momento",
+            ]
+        ]
+        .copy()
     )
 
     if not serie.empty:
 
-        st.line_chart(serie)
+        fig = px.line(
+            serie,
+            x="analise_data",
+            y="quantitativo",
+            markers=True,
+            labels={
+                "analise_data": "Data da análise",
+                "quantitativo": "Quantitativo",
+            },
+        )
+
+        # Criar pontos separados por classificação
+        for classificacao_nome in serie["classificacao_no_momento"].dropna().unique():
+
+            dados_classificacao = serie[
+                serie["classificacao_no_momento"] == classificacao_nome
+            ]
+
+            fig.add_scatter(
+                x=dados_classificacao["analise_data"],
+                y=dados_classificacao["quantitativo"],
+                mode="markers",
+                name=classificacao_nome,
+                hovertemplate=(
+                    "<b>Data:</b> %{x|%d/%m/%Y %H:%M}<br>"
+                    "<b>Quantitativo:</b> %{y}<br>"
+                    f"<b>Classificação:</b> {classificacao_nome}"
+                    "<extra></extra>"
+                ),
+            )
+
+        fig.update_layout(
+            xaxis_title="Data da análise",
+            yaxis_title="Quantitativo",
+            hovermode="closest",
+        )
+
+        st.plotly_chart(
+            fig,
+            use_container_width=True,
+        )
 
         st.caption(
-            "A frequência das análises varia entre os trechos; "
-            "a interpretação da série deve considerar a "
-            "disponibilidade das observações."
+            "A linha representa a evolução do quantitativo das análises. "
+            "Os pontos representam a classificação calculada no momento "
+            "de cada análise, considerando a janela histórica de até "
+            "cinco análises."
         )
 
     else:

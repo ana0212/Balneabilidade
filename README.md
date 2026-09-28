@@ -4,11 +4,26 @@ Projeto desenvolvido a partir da base de dados de balneabilidade, com foco em tr
 
 ## Estrutura
 
-- `data/` — bases bruta e tratadas
-- `notebooks/` — análise exploratória
-- `scripts/` — scripts de tratamento e normalização
-- `sql/` — scripts de criação do banco e classificação
-- `balneabilidade.db` — banco de dados SQLite
+Balneabilidade/
+├── data/
+│   ├── bruto/
+│   └── processed/
+├── scripts/
+│   ├── normalizacao.py
+│   └── tratamento.py
+├── sql/
+│   ├── classificacao.sql
+│   └── schema.sql
+├── app/
+│   ├── app.py
+│   ├── database.py
+│   └── pages/
+├── notebooks/
+├── docs/
+│   └── relatorio.pdf
+├── balneabilidade.db
+├── requirements.txt
+└── README.md
 
 ## Etapas
 
@@ -16,7 +31,9 @@ Projeto desenvolvido a partir da base de dados de balneabilidade, com foco em tr
 - Normalização da base em `municipios`, `trechos` e `analises`
 - Criação e carga do banco SQLite
 - Implementação da regra de classificação dos trechos
-- Desenvolvimento do dashboard em Streamlit *(em andamento)*
+- Desenvolvimento do dashboard em Streamlit
+- Análise dos resultados e identificação dos principais padrões observados
+- Documentação das decisões de tratamento, normalização e modelagem
 
 ## Tecnologias
 

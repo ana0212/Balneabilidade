@@ -9,7 +9,7 @@ st.set_page_config(
 )
 
 
-st.title("🔎 Consulta aos dados")
+st.title("Consulta aos dados")
 
 st.caption(
     "Consulte os trechos e análises de balneabilidade "

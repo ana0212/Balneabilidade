@@ -14,6 +14,10 @@ pg = st.navigation(
             "pages/analise_regional.py",
             title="Análise regional",
         ),
+        st.Page(
+            "pages/historico.py",
+            title="Histórico",
+        ),
     ]
 )
 

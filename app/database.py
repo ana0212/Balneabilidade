@@ -67,6 +67,7 @@ def carregar_mapa():
         SELECT
             t.trecho_id,
             t.trecho_nome,
+            t.municipio_id,
             t.latitude,
             t.longitude,
             m.municipio_nome
@@ -87,6 +88,27 @@ def carregar_classificacao_historica():
         SELECT *
         FROM classificacao_historica
         ORDER BY trecho_id, data_referencia
+    """
+
+    return pd.read_sql_query(query, conn)
+
+# FUNCAO PARA CARREGAR OS TRECHOS
+@st.cache_data
+def carregar_trechos():
+    conn = conectar_banco()
+
+    query = """
+        SELECT
+            t.trecho_id,
+            t.trecho_nome,
+            t.municipio_id,
+            m.municipio_nome,
+            t.periodicidade
+        FROM trechos AS t
+        INNER JOIN municipios AS m
+            ON t.municipio_id = m.municipio_id
+        WHERE t.excluido = 0
+        ORDER BY t.trecho_id
     """
 
     return pd.read_sql_query(query, conn)

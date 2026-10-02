@@ -23,7 +23,7 @@ CREATE TABLE trechos (
 CREATE TABLE analises (
     analise_id INTEGER PRIMARY KEY,
     trecho_id INTEGER NOT NULL,
-    analise_data TEXT NOT NULL,
+    analise_data DATETIME NOT NULL,
     quantitativo INTEGER,
     FOREIGN KEY (trecho_id)
     REFERENCES trechos (trecho_id)

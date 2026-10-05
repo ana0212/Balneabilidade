@@ -18,6 +18,11 @@ Balneabilidade/
 │   ├── app.py
 │   ├── database.py
 │   └── pages/
+├── php/
+│   ├── index.php
+│   ├── database.php
+│   ├── queries.php
+│   └── style.css
 ├── notebooks/
 ├── docs/
 │   └── relatorio.pdf
@@ -30,10 +35,13 @@ Balneabilidade/
 
 ## Etapas
 - Análise exploratória e tratamento dos dados
-- Normalização da base em `municipios`, `trechos` e `analises`
+- Identificação e tratamento de inconsistências e registros duplicados
+- Normalização da base nas tabelas municipios, trechos e analises
 - Criação e carga do banco SQLite
 - Implementação da regra de classificação dos trechos
 - Desenvolvimento do dashboard em Streamlit
+- Desenvolvimento de consultas e análises no Metabase
+- Desenvolvimento de aplicação web em PHP integrada ao SQLite
 - Análise dos resultados e identificação dos principais padrões observados
 - Documentação das decisões de tratamento, normalização e modelagem
 
@@ -57,7 +65,7 @@ docker compose up -d
 ```
 
 ## Tecnologias
-Python, Pandas, SQLite, SQL, DBeaver, Streamlit e Git.
+Python, Pandas, SQLite, SQL, DBeaver, Streamlit, PHP e Git.
 
 ## Aplicação PHP
 Aplicação web para consulta dos dados de

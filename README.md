@@ -59,4 +59,18 @@ docker compose up -d
 ## Tecnologias
 Python, Pandas, SQLite, SQL, DBeaver, Streamlit e Git.
 
+## Aplicação PHP
+Aplicação web para consulta dos dados de
+balneabilidade utilizando PHP e SQLite.
+
+### Executar
+php -S localhost:8000 -t php
+
+Acessar:
+http://localhost:8000
+
+## Próximas etapas
+- Integração do dashboard Metabase
+- Publicação da aplicação
+- Melhorias de interface
 

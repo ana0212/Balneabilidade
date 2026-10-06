@@ -1,6 +1,9 @@
 <?php
 
 require_once 'queries.php';
+require_once 'metabase.php';
+
+$metabaseToken = gerarTokenMetabase();
 
 $municipioId = isset($_GET['municipio']) && $_GET['municipio'] !== ''
     ? (int) $_GET['municipio']
@@ -60,6 +63,35 @@ if ($trechoId !== null) {
         </p>
 
     </header>
+
+    <!-- Dashboard -->
+    <section class="dashboard-card">
+
+        <div class="dashboard-content">
+
+            <div class="dashboard-text">
+
+                <h2>
+                    Dashboard de Balneabilidade
+                </h2>
+
+                <p>
+                    Explore indicadores, mapas, classificações e a evolução
+                    histórica da qualidade da água nos trechos monitorados.
+                </p>
+
+            </div>
+
+            <a
+                href="dashboard.php"
+                class="dashboard-button"
+            >
+                Acessar dashboard
+            </a>
+
+        </div>
+
+    </section>
 
 
     <!-- Filtros -->

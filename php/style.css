@@ -202,3 +202,66 @@ tbody tr:hover {
         width: 100%;
     }
 }
+/* Dashboard */
+.dashboard-card {
+    background: linear-gradient(
+        135deg,
+        #eff6ff 0%,
+        #ffffff 100%
+    );
+    border: 1px solid #dbeafe;
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.dashboard-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+}
+
+.dashboard-text {
+    max-width: 720px;
+}
+
+.dashboard-label {
+    display: inline-block;
+    margin-bottom: 8px;
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.dashboard-card h2 {
+    margin: 0 0 8px;
+    font-size: 22px;
+    color: #1f2937;
+}
+
+.dashboard-card p {
+    margin: 0;
+    color: #667085;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.dashboard-button {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 6px;
+    background: #2563eb;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.2s ease;
+}
+
+.dashboard-button:hover {
+    background: #1d4ed8;
+}

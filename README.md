@@ -4,6 +4,13 @@ Projeto desenvolvido a partir da base de dados de balneabilidade, com foco em tr
 
 ## Estrutura
 ```text
+# Projeto de Balneabilidade
+
+Projeto desenvolvido a partir da base de dados de balneabilidade, com foco em tratamento, análise, modelagem dos dados e desenvolvimento de aplicações para consulta e visualização dos resultados.
+
+## Estrutura
+
+```text
 Balneabilidade/
 ├── data/
 │   ├── bruto/
@@ -20,8 +27,10 @@ Balneabilidade/
 │   └── pages/
 ├── php/
 │   ├── index.php
+│   ├── dashboard.php
 │   ├── database.php
 │   ├── queries.php
+│   ├── metabase.php
 │   └── style.css
 ├── notebooks/
 ├── docs/
@@ -41,7 +50,7 @@ Balneabilidade/
 - Implementação da regra de classificação dos trechos
 - Desenvolvimento do dashboard em Streamlit
 - Desenvolvimento de consultas e análises no Metabase
-- Desenvolvimento de aplicação web em PHP integrada ao SQLite
+- Dseenvolvimento de aplicação web em PHP integrada ao SQLite e ao Metabase
 - Análise dos resultados e identificação dos principais padrões observados
 - Documentação das decisões de tratamento, normalização e modelagem
 
@@ -78,7 +87,5 @@ Acessar:
 http://localhost:8000
 
 ## Próximas etapas
-- Integração do dashboard Metabase
 - Publicação da aplicação
-- Melhorias de interface
 

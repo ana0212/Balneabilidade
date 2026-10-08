@@ -6,7 +6,7 @@ use Firebase\JWT\JWT;
 
 function gerarTokenMetabase(): string
 {
-    $secret = $_ENV['METABASE_SECRET_KEY'] ?? null;
+    $secret = getenv('METABASE_SECRET_KEY') ?: null;
 
     if (!$secret) {
         throw new RuntimeException('METABASE_SECRET_KEY não encontrada.');

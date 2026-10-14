@@ -97,7 +97,7 @@ aplica às duas.
                                    nulos/ausentes   automaticamente   
                                                     em "Própria"      
 
-  V14            Fozes             Repetir          Indicadores não   Consulta e
+  V14            Fontes             Repetir          Indicadores não   Consulta e
                                    contagens        confundem foz com captura
                                    separando        praia             
                                    `fonte = 0` e                      
@@ -244,13 +244,4 @@ views e campos no banco antes de usar.
     agrupamentos analíticos.
 -   Qual fonte oficial deve ser usada para coordenadas, códigos IBGE e
     nomes de municípios?
-
-Registre cada item como **Confirmado**, **Pendente** ou **Não
-aplicável**, incluindo a fonte da confirmação.
-
-## 6. Critério de conclusão
-
-O plano estará concluído para o protótipo quando os testes aplicáveis
-tiverem resultados e evidências registrados, e as limitações
-documentadas. A validação institucional depende da conferência com os
-dados oficiais e da confirmação das regras pertinentes.
+- Em caso de repetição de análise no mesmo dia, será usada a média do quantitativo?

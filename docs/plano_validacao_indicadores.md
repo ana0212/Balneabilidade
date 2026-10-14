@@ -1,8 +1,4 @@
-# Plano de validação dos indicadores --- Balneabilidade
-
-**Versão:** 0.1 --- documento de trabalho\
-**Escopo:** protótipo local. A validação institucional permanece
-pendente.
+# Plano de validação dos indicadores - Balneabilidade
 
 ## 1. Objetivo
 

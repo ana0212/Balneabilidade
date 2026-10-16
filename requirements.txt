@@ -5,3 +5,5 @@ folium
 streamlit-folium
 plotly
 geopandas
+requests
+dotenv

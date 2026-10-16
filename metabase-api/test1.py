@@ -57,7 +57,7 @@ if __name__ == "__main__":
         token = autenticar_metabase()
         print("Autenticação realizada com sucesso!")
 
-        dashboard_id = 3  # Substitua pelo ID de um dashboard existente
+        dashboard_id = 3 
         dashboard = consultar_dashboard(token, dashboard_id)
 
         print("Consulta realizada com sucesso!")

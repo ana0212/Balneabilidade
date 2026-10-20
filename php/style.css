@@ -265,3 +265,597 @@ tbody tr:hover {
 .dashboard-button:hover {
     background: #1d4ed8;
 }
+
+/* Relatório semanal */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f3f6fa;
+    color: #243247;
+}
+
+.container {
+    width: min(1200px, 94%);
+    margin: 35px auto;
+}
+
+.cabecalho {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    border-left: 5px solid #1976a8;
+    box-shadow: 0 3px 12px rgba(20, 40, 70, 0.06);
+}
+
+.cabecalho h1 {
+    margin: 0 0 10px;
+    font-size: 28px;
+    color: #173b5e;
+}
+
+.cabecalho p {
+    margin: 0;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.filtros {
+    background: #ffffff;
+    padding: 22px;
+    border-radius: 12px;
+    margin-bottom: 28px;
+    box-shadow: 0 3px 12px rgba(20, 40, 70, 0.06);
+}
+
+.filtros form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 450px;
+}
+
+.filtros label {
+    font-weight: 700;
+    color: #334155;
+}
+
+.filtros select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #243247;
+    font-size: 15px;
+}
+
+.filtros button {
+    padding: 10px 16px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 7px;
+    background: #1976a8;
+    color: white;
+    cursor: pointer;
+}
+
+.resumo h2 {
+    margin-bottom: 8px;
+    color: #173b5e;
+}
+
+.semana-atual {
+    margin-bottom: 20px;
+    color: #64748b;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    min-height: 180px;
+    padding: 24px;
+    background: #ffffff;
+    border-radius: 12px;
+    border-top: 4px solid #1976a8;
+    box-shadow: 0 3px 12px rgba(20, 40, 70, 0.06);
+}
+
+.card-titulo {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.card-valor {
+    font-size: 34px;
+    line-height: 1.1;
+    color: #173b5e;
+}
+
+.card-descricao {
+    margin-top: auto;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #718096;
+}
+
+.card-destaque {
+    border-top-color: #21966b;
+}
+
+.card-destaque .card-valor {
+    color: #16845b;
+}
+
+@media (max-width: 900px) {
+    .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 520px) {
+    .container {
+        width: 92%;
+        margin: 20px auto;
+    }
+
+    .cabecalho h1 {
+        font-size: 23px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Gráfico de Rosca */
+.grafico-container {
+    margin-top: 28px;
+    padding: 24px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(20, 40, 70, 0.06);
+}
+
+.grafico-container h2 {
+    margin-top: 0;
+    color: #173b5e;
+}
+
+.grafico-descricao {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.grafico-rosca {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    height: 320px;
+    margin: 20px auto 0;
+}
+
+
+.panorama {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: stretch;
+    margin-top: 24px;
+}
+
+/* Gráfico à esquerda */
+.grafico-container {
+    min-width: 0;
+    margin: 0;
+    padding: 24px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(20, 40, 70, 0.06);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.grafico-container h2 {
+    margin: 0 0 10px;
+    color: #173b5e;
+    font-size: 20px;
+}
+
+.grafico-descricao {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.grafico-rosca {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    margin: auto 0;
+}
+
+/* Cards à direita, em grade 2x2 */
+.panorama-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(150px, 1fr));
+    gap: 18px;
+    align-content: stretch;
+    min-width: 0;
+    margin: 0;
+}
+
+.panorama-cards .card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 12px;
+    min-width: 0;
+    margin: 0;
+    padding: 22px;
+    background: #ffffff;
+    border-radius: 12px;
+    border-top: 4px solid #1976a8;
+    box-shadow: 0 3px 12px rgba(20, 40, 70, 0.06);
+}
+
+.panorama-cards .card-destaque {
+    border-top-color: #21966b;
+}
+
+.panorama-cards .card-titulo {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.panorama-cards .card-valor {
+    color: #173b5e;
+    font-size: clamp(26px, 2.5vw, 36px);
+}
+
+/* Telas menores */
+@media (max-width: 800px) {
+    .panorama {
+        grid-template-columns: 1fr;
+    }
+
+    .grafico-rosca {
+        height: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+    .panorama-cards {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .panorama-cards .card {
+        min-height: 130px;
+    }
+}
+
+/* Dois gráficos de barras lado a lado */
+.graficos-barras {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+    align-items: stretch;
+}
+
+.graficos-barras .grafico-container {
+    min-width: 0;
+    margin: 0;
+    padding: 24px;
+}
+
+.grafico-barras-area {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    margin-top: 20px;
+}
+
+@media (max-width: 800px) {
+    .graficos-barras {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Gráfico de municípios ocupa a largura inteira */
+.grafico-municipios {
+    width: 100%;
+    margin-top: 24px;
+}
+
+.grafico-municipios-area {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+    .grafico-municipios-area {
+        height: 460px;
+    }
+}
+
+.grafico-mudancas {
+    width: 100%;
+    margin-top: 24px;
+}
+
+.grafico-mudancas-area {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+    .grafico-mudancas-area {
+        height: 420px;
+    }
+}
+
+
+/* Painel da tabela */
+.tabela-container {
+    width: 100%;
+    margin-top: 24px;
+    padding: 24px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(20, 40, 70, 0.06);
+}
+
+.tabela-container h2 {
+    margin-top: 0;
+    color: #173b5e;
+}
+
+.tabela-responsiva {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+.tabela-mudancas {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.tabela-mudancas th,
+.tabela-mudancas td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.tabela-mudancas th {
+    background: #edf2f7;
+    color: #334155;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.tabela-mudancas tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+/* Passou para Imprópria: vermelho */
+.tabela-mudancas tbody tr.evolucao-impropria {
+    background: #f8d7da;
+}
+
+/* Desceu de categoria: amarelo */
+.tabela-mudancas tbody tr.evolucao-desceu {
+    background: #fff3cd;
+}
+
+/* Melhorou de categoria: verde-claro */
+.tabela-mudancas tbody tr.evolucao-melhorou {
+    background: #d1e7dd;
+}
+
+/* Melhorou para Excelente: verde-escuro */
+.tabela-mudancas tbody tr.evolucao-excelente {
+    background: #198754;
+    color: #ffffff;
+}
+
+/* Quantitativo acima de 1000: linha rosa-claro */
+.tabela-mudancas tbody tr.quantitativo-alto {
+    background: #f8d7da;
+}
+
+/* Célula do quantitativo acima de 1000: vermelho */
+.tabela-mudancas td.celula-quantitativo-alto {
+    background: #dc3545;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* Cabeçalho e linha sem resultados */
+.tabela-mudancas .tabela-vazia {
+    padding: 24px;
+    text-align: center;
+    color: #64748b;
+}
+
+/* Ajustes em telas menores */
+@media (max-width: 768px) {
+    .tabela-container {
+        padding: 16px;
+    }
+
+    .tabela-mudancas {
+        min-width: 900px;
+    }
+}
+
+
+/* Filtros locais da tabela de trechos */
+.filtros-tabela {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 16px;
+    margin: 22px 0;
+}
+
+.campo-filtro {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 200px;
+}
+
+.campo-filtro label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #334155;
+}
+
+.campo-filtro select {
+    min-width: 200px;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    background: #ffffff;
+    font-size: 14px;
+}
+
+.acoes-filtro {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.acoes-filtro button {
+    padding: 11px 16px;
+    border: none;
+    border-radius: 7px;
+    background: #1976a8;
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.acoes-filtro a {
+    color: #1976a8;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.acoes-filtro a:hover {
+    text-decoration: underline;
+}
+
+/* Tabela de trechos analisados */
+.tabela-trechos {
+    min-width: 1100px;
+}
+
+/* Quantitativo acima de 1000: linha amarela-clara */
+.tabela-trechos tbody tr.linha-quantitativo-alto {
+    background-color: #fff3cd;
+}
+
+/* Classificação atual imprópria: linha vermelha-clara */
+.tabela-trechos tbody tr.linha-impropria {
+    background-color: #f8d7da;
+}
+
+/* Quantitativo alto: célula amarela */
+.tabela-trechos td.celula-quantitativo-amarelo {
+    background-color: #ffc107;
+    color: #332701;
+    font-weight: 700;
+}
+
+/* Imprópria: célula de classificação em vermelho-escuro */
+.tabela-trechos td.celula-classificacao-impropria {
+    background-color: #b02a37;
+    color: #ffffff;
+    font-weight: 700;
+}
+
+@media (max-width: 600px) {
+    .filtros-tabela {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .campo-filtro,
+    .campo-filtro select {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+.grafico-evolucao {
+    width: 100%;
+    margin-top: 24px;
+}
+
+.grafico-evolucao-area {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    margin-top: 20px;
+}
+
+.grafico-evolucao .filtros-tabela {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 12px;
+}
+
+.grafico-evolucao .filtros-tabela label {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.grafico-evolucao .filtros-tabela select {
+    min-width: 260px;
+    padding: 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+}
+
+@media (max-width: 600px) {
+    .grafico-evolucao-area {
+        height: 350px;
+    }
+
+    .grafico-evolucao .filtros-tabela select {
+        width: 100%;
+        min-width: 0;
+    }
+}

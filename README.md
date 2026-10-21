@@ -8,6 +8,8 @@ Objetivos
 - Disponibilizar consultas, indicadores, gráficos e tabelas para explorar os resultados.
 - Documentar as decisões de tratamento e modelagem.
 Estrutura do projeto
+
+```text
 Balneabilidade/
 ├── data/
 │   ├── bruto/
@@ -45,6 +47,7 @@ Balneabilidade/
 ├── balneabilidade.db
 ├── requirements.txt
 └── README.md
+```
 A estrutura acima representa a organização prevista do projeto. Ajuste os nomes ou caminhos caso os arquivos no repositório sejam diferentes.
 
 Etapas do projeto

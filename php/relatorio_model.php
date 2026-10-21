@@ -2,6 +2,14 @@
 
 require_once __DIR__ . '/database.php';
 
+/**
+ * Retorna a consulta SQL-base utilizada pelo relatório semanal.
+ *
+ * A consulta centraliza as regras de preparação dos dados
+ * reutilizadas pelas funções de consulta do relatório.
+ *
+ * @return string Consulta SQL do modelo do relatório.
+ */
 function getSqlModeloRelatorio(): string
 {
 

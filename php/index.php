@@ -1,17 +1,16 @@
 <?php
 
-require_once 'queries.php';
-require_once 'metabase.php';
+require_once __DIR__ . '/queries.php';
+require_once  __DIR__ . '/helpers.php';
 
-$metabaseToken = gerarTokenMetabase();
-
-$municipioId = isset($_GET['municipio']) && $_GET['municipio'] !== ''
-    ? (int) $_GET['municipio']
-    : null;
-
-$trechoId = isset($_GET['trecho']) && $_GET['trecho'] !== ''
-    ? (int) $_GET['trecho']
-    : null;
+// Validação dos filtros
+try {
+    $municipioId = validarIdOpcional($_GET, 'municipio');
+    $trechoId = validarIdOpcional($_GET, 'trecho');
+} catch (InvalidArgumentException $e) {
+    http_response_code(400);
+    exit('Os filtros informados são inválidos.');
+}
 
 
 // Dados dos filtros
@@ -45,7 +44,7 @@ if ($trechoId !== null) {
 
     <title>Balneabilidade da Paraíba</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
@@ -64,45 +63,44 @@ if ($trechoId !== null) {
 
     </header>
 
-    <!-- Dashboard -->
+    <!-- Acessos aos relatórios -->
     <section class="dashboard-card">
-
         <div class="dashboard-content">
-
             <div class="dashboard-text">
-
-                <h2>
-                    Dashboard de Balneabilidade
-                </h2>
-
+                <h2>Dashboard de Balneabilidade</h2>
                 <p>
                     Explore indicadores, mapas, classificações e a evolução
                     histórica da qualidade da água nos trechos monitorados.
                 </p>
-
             </div>
 
-            <a
-                href="dashboard.php"
-                class="dashboard-button"
-            >
+            <a href="dashboard.php" class="dashboard-button">
                 Acessar dashboard
             </a>
-
         </div>
-
     </section>
 
+    <section class="dashboard-card">
+        <div class="dashboard-content">
+            <div class="dashboard-text">
+                <h2>Relatório Semanal de Balneabilidade</h2>
+                <p>
+                    Consulte os indicadores semanais, as classificações dos
+                    trechos, as mudanças identificadas e a evolução histórica.
+                </p>
+            </div>
+
+            <a href="relatorio_semanal.php" class="dashboard-button">
+                Acessar relatório semanal
+            </a>
+        </div>
+    </section>
 
     <!-- Filtros -->
     <section class="card">
-
         <h2>Filtros</h2>
-
         <form method="GET" class="filters">
-
             <div class="field">
-
                 <label for="municipio">
                     Município
                 </label>
@@ -125,18 +123,13 @@ if ($trechoId !== null) {
                                 ? 'selected'
                                 : '' ?>
                         >
-                            <?= htmlspecialchars($municipio['municipio_nome']) ?>
+                            <?= escaparHtml($municipio['municipio_nome']) ?>
                         </option>
-
                     <?php endforeach; ?>
-
                 </select>
-
             </div>
 
-
             <div class="field">
-
                 <label for="trecho">
                     Trecho
                 </label>
@@ -158,60 +151,42 @@ if ($trechoId !== null) {
                                 ? 'selected'
                                 : '' ?>
                         >
-                            <?= htmlspecialchars($trecho['trecho_nome']) ?>
+                            <?= escaparHtml($trecho['trecho_nome']) ?>
                         </option>
 
                     <?php endforeach; ?>
-
                 </select>
-
             </div>
 
-
             <div class="field button-field">
-
                 <button type="submit">
                     Consultar
                 </button>
-
             </div>
-
         </form>
-
     </section>
 
 
     <!-- Situação atual -->
     <section class="card">
-
         <div class="section-header">
-
             <div>
                 <h2>Situação atual</h2>
-
                 <p>
                     Classificação baseada nas análises mais recentes
                     de cada trecho.
                 </p>
             </div>
-
         </div>
 
-
         <?php if (count($situacoes) === 0): ?>
-
             <div class="empty-state">
                 Nenhum resultado encontrado.
             </div>
-
         <?php else: ?>
-
             <div class="table-wrapper">
-
                 <table>
-
                     <thead>
-
                         <tr>
                             <th>Município</th>
                             <th>Trecho</th>
@@ -219,13 +194,9 @@ if ($trechoId !== null) {
                             <th>Análises consideradas</th>
                             <th>Classificação</th>
                         </tr>
-
                     </thead>
-
                     <tbody>
-
                         <?php foreach ($situacoes as $situacao): ?>
-
                             <?php
                                 $classificacao = $situacao['classificacao'];
                                 $classe = strtolower(
@@ -236,63 +207,47 @@ if ($trechoId !== null) {
                                     )
                                 );
                             ?>
-
                             <tr>
-
                                 <td>
-                                    <?= htmlspecialchars(
+                                    <?= escaparHtml(
                                         $situacao['municipio_nome']
                                     ) ?>
                                 </td>
-
                                 <td>
-                                    <?= htmlspecialchars(
+                                    <?= escaparHtml(
                                         $situacao['trecho_nome']
                                     ) ?>
                                 </td>
-
                                 <td>
-                                    <?= htmlspecialchars(
+                                    <?= escaparHtml(
                                         $situacao['quantitativo_mais_recente']
                                     ) ?>
                                 </td>
-
                                 <td>
-                                    <?= htmlspecialchars(
+                                    <?= escaparHtml(
                                         $situacao['qtd_analises']
                                     ) ?>
                                 </td>
-
                                 <td>
 
                                     <span class="badge <?= $classe ?>">
-                                        <?= htmlspecialchars($classificacao) ?>
+                                        <?= escaparHtml($classificacao) ?>
                                     </span>
 
                                 </td>
-
                             </tr>
-
                         <?php endforeach; ?>
-
                     </tbody>
-
                 </table>
-
             </div>
-
         <?php endif; ?>
-
     </section>
 
 
     <!-- Histórico -->
     <?php if ($trechoId !== null): ?>
-
         <section class="card">
-
             <h2>Histórico de análises</h2>
-
             <?php if (count($historico) === 0): ?>
 
                 <div class="empty-state">
@@ -300,23 +255,16 @@ if ($trechoId !== null) {
                 </div>
 
             <?php else: ?>
-
                 <div class="table-wrapper">
-
                     <table>
-
                         <thead>
-
                             <tr>
                                 <th>Data</th>
                                 <th>Quantitativo</th>
                                 <th>Classificação</th>
                             </tr>
-
                         </thead>
-
                         <tbody>
-
                             <?php foreach ($historico as $analise): ?>
 
                                 <?php
@@ -332,50 +280,34 @@ if ($trechoId !== null) {
                                         )
                                     );
                                 ?>
-
                                 <tr>
-
                                     <td>
-                                        <?= htmlspecialchars(
+                                        <?= escaparHtml(
                                             $analise['analise_data']
                                         ) ?>
                                     </td>
-
                                     <td>
-                                        <?= htmlspecialchars(
+                                        <?= escaparHtml(
                                             $analise['quantitativo']
                                         ) ?>
                                     </td>
-
                                     <td>
-
                                         <span
                                             class="badge <?= $classeHistorica ?>"
                                         >
-                                            <?= htmlspecialchars(
+                                            <?= escaparHtml(
                                                 $classificacaoHistorica
                                             ) ?>
                                         </span>
-
                                     </td>
-
                                 </tr>
-
                             <?php endforeach; ?>
-
                         </tbody>
-
                     </table>
-
                 </div>
-
             <?php endif; ?>
-
         </section>
-
     <?php endif; ?>
-
 </main>
-
 </body>
 </html>

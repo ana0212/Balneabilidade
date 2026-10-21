@@ -4,7 +4,13 @@
 require_once __DIR__ . '/database.php';
 require_once __DIR__ . '/relatorio_model.php';
 
-# Obter as semanas para os filtros
+/**
+ * Retorna as semanas de referência disponíveis no relatório,
+ * ordenadas da mais recente para a mais antiga.
+ *
+ * @param PDO $pdo Conexão ativa com o banco de dados.
+ * @return array Lista de semanas de referência.
+ */
 function getSemanasDisponiveis(PDO $pdo): array
 {
     $modelo = getSqlModeloRelatorio();
@@ -23,7 +29,17 @@ function getSemanasDisponiveis(PDO $pdo): array
     return $pdo->query($sql)->fetchAll(PDO::FETCH_COLUMN);
 }
 
-# Obter os dados dos indicadores dos cards com filtro de semana
+
+/**
+ * Calcula os indicadores gerais do relatório para uma semana.
+ *
+ * Retorna a quantidade de trechos, municípios, análises
+ * e trechos classificados como excelentes.
+ *
+ * @param PDO $pdo Conexão ativa com o banco de dados.
+ * @param string $semana Semana de referência selecionada.
+ * @return array Indicadores do panorama semanal.
+ */
 function getIndicadoresPanorama(PDO $pdo, string $semana): array
 {
     $modelo = getSqlModeloRelatorio();
@@ -61,7 +77,14 @@ function getIndicadoresPanorama(PDO $pdo, string $semana): array
     ];
 }
 
-# Obter a contagem dos trechos próprios para banho para o gráfico de rosca
+/**
+ * Retorna a contagem de trechos próprios e impróprios
+ * para banho na semana selecionada.
+ *
+ * @param PDO $pdo Conexão ativa com o banco de dados.
+ * @param string $semana Semana de referência selecionada.
+ * @return array Contagem de trechos por situação.
+ */
 function getDadosGraficoSituacao(PDO $pdo, string $semana): array
 {
     $modelo = getSqlModeloRelatorio();
@@ -98,7 +121,15 @@ function getDadosGraficoSituacao(PDO $pdo, string $semana): array
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-# Obter dados para o gráfico de barras de classificação
+
+/**
+ * Retorna a quantidade de trechos por classificação histórica
+ * na semana selecionada.
+ *
+ * @param PDO $pdo Conexão ativa com o banco de dados.
+ * @param string $semana Semana de referência selecionada.
+ * @return array Contagem de trechos por classificação.
+ */
 function getDadosGraficoClassificacao(PDO $pdo, string $semana): array
 {
     $modelo = getSqlModeloRelatorio();
@@ -124,7 +155,15 @@ function getDadosGraficoClassificacao(PDO $pdo, string $semana): array
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-# Obter dados para gráfico de barras de Periodicidade
+
+/**
+ * Retorna a quantidade de trechos por periodicidade
+ * de análise na semana selecionada.
+ *
+ * @param PDO $pdo Conexão ativa com o banco de dados.
+ * @param string $semana Semana de referência selecionada.
+ * @return array Contagem de trechos por periodicidade.
+ */
 function getDadosGraficoPeriodicidade(PDO $pdo, string $semana): array
 {
     $modelo = getSqlModeloRelatorio();
@@ -154,7 +193,15 @@ function getDadosGraficoPeriodicidade(PDO $pdo, string $semana): array
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-# Obter dados para gráfico de classificação por município
+
+/**
+ * Retorna a quantidade de trechos por classificação histórica
+ * agrupada por município na semana selecionada.
+ *
+ * @param PDO $pdo Conexão ativa com o banco de dados.
+ * @param string $semana Semana de referência selecionada.
+ * @return array Contagem de trechos por município e classificação.
+ */
 function getDadosGraficoClassificacaoMunicipio(
     PDO $pdo,
     string $semana
@@ -188,7 +235,14 @@ function getDadosGraficoClassificacaoMunicipio(
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-# Obter dados para gráfico de mudança de classificação
+/**
+ * Retorna a quantidade de registros por tipo de mudança
+ * de classificação na semana selecionada.
+ *
+ * @param PDO $pdo Conexão ativa com o banco de dados.
+ * @param string $semana Semana de referência selecionada.
+ * @return array Contagem de registros por tipo de mudança.
+ */
 function getDadosGraficoMudancas(PDO $pdo, string $semana): array
 {
     $modelo = getSqlModeloRelatorio();
@@ -215,7 +269,15 @@ function getDadosGraficoMudancas(PDO $pdo, string $semana): array
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-# Obter dados para tabela de mudanças
+
+/**
+ * Retorna os registros com mudança de classificação
+ * na semana selecionada, ordenados por data e localização.
+ *
+ * @param PDO $pdo Conexão ativa com o banco de dados.
+ * @param string $semana Semana de referência selecionada.
+ * @return array Registros de mudanças de classificação.
+ */
 function getDadosTabelaMudancas(PDO $pdo, string $semana): array
 {
     $modelo = getSqlModeloRelatorio();
@@ -246,7 +308,17 @@ function getDadosTabelaMudancas(PDO $pdo, string $semana): array
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-# Obter os dados da tabela de análises da semana
+
+/**
+ * Retorna os registros de análise dos trechos na semana
+ * selecionada, com filtros opcionais de classificação e município.
+ *
+ * @param PDO $pdo Conexão ativa com o banco de dados.
+ * @param string $semana Semana de referência selecionada.
+ * @param string $classificacao Classificação para filtrar; vazio não filtra.
+ * @param string $municipio Município para filtrar; vazio não filtra.
+ * @return array Registros de análise para a tabela semanal.
+ */
 function getDadosTabelaTrechosSemana(
     PDO $pdo,
     string $semana,
@@ -311,8 +383,16 @@ function getDadosTabelaTrechosSemana(
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function getClassificacoesFiltroTabela(PDO $pdo, string $semana): array
-{
+
+/**
+ * Retorna os municípios disponíveis para filtrar a tabela
+ * de análises na semana selecionada.
+ *
+ * @param PDO $pdo Conexão ativa com o banco de dados.
+ * @param string $semana Semana de referência selecionada.
+ * @return array Lista de municípios distintos.
+ */
+function getClassificacoesFiltroTabela(PDO $pdo, string $semana): array {
     $modelo = getSqlModeloRelatorio();
 
     $sql = "
@@ -332,6 +412,15 @@ function getClassificacoesFiltroTabela(PDO $pdo, string $semana): array
     return $stmt->fetchAll(PDO::FETCH_COLUMN);
 }
 
+
+/**
+ * Retorna os municípios disponíveis para filtrar a tabela
+ * de análises na semana selecionada.
+ *
+ * @param PDO $pdo Conexão ativa com o banco de dados.
+ * @param string $semana Semana de referência selecionada.
+ * @return array Lista de municípios distintos.
+ */
 function getMunicipiosFiltroTabela(PDO $pdo, string $semana): array
 {
     $modelo = getSqlModeloRelatorio();
@@ -353,7 +442,18 @@ function getMunicipiosFiltroTabela(PDO $pdo, string $semana): array
     return $stmt->fetchAll(PDO::FETCH_COLUMN);
 }
 
-# Obter os dados para o gráfico de evolução do quantitativo
+/**
+ * Retorna a evolução histórica do quantitativo por data e trecho,
+ * limitada à data mais recente da semana de referência selecionada.
+ *
+ * Quando informado, o filtro de trecho restringe os resultados
+ * a um único trecho.
+ *
+ * @param PDO $pdo Conexão ativa com o banco de dados.
+ * @param string $semana Semana usada para determinar a data-limite.
+ * @param string $trecho Nome do trecho para filtrar; vazio inclui todos.
+ * @return array Dados históricos para o gráfico de evolução.
+ */
 function getDadosEvolucaoQuantitativo(
     PDO $pdo,
     string $semana,
@@ -362,9 +462,7 @@ function getDadosEvolucaoQuantitativo(
     $modelo = getSqlModeloRelatorio();
 
     $sql = "
-        WITH modelo AS (
-            $modelo
-        ),
+        WITH modelo AS ($modelo),
         limite AS (
             SELECT MAX(date(analise_data)) AS data_limite
             FROM modelo
@@ -373,40 +471,35 @@ function getDadosEvolucaoQuantitativo(
         SELECT
             date(m.analise_data) AS analise_data,
             m.trecho_nome,
-            m.classificacao_historica AS classificacao,
             AVG(m.quantitativo) AS media_quantitativo,
-            m.semana_referencia
+            GROUP_CONCAT(
+                DISTINCT m.classificacao_historica
+            ) AS classificacao_historica
         FROM modelo m
         CROSS JOIN limite l
         WHERE l.data_limite IS NOT NULL
-        AND date(m.analise_data) <= l.data_limite
-            ";
+          AND date(m.analise_data) <= l.data_limite
+    ";
 
     $parametros = [
         ':semana_limite' => $semana
     ];
 
     if ($trecho !== '') {
-        $sql .= " AND m.trecho_nome = :trecho ";
+        $sql .= " AND m.trecho_nome = :trecho";
         $parametros[':trecho'] = $trecho;
     }
 
     $sql .= "
-        GROUP BY
-            date(m.analise_data),
-            m.trecho_nome,
-            m.classificacao_historica,
-            m.semana_referencia
-        ORDER BY
-            date(m.analise_data) ASC
-            ";
+        GROUP BY date(m.analise_data), m.trecho_nome
+        ORDER BY date(m.analise_data) ASC
+    ";
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute($parametros);
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
 
 
 

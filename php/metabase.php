@@ -3,14 +3,21 @@
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 
-use Firebase\JWT\JWT;
 use Dotenv\Dotenv;
+use Firebase\JWT\JWT;
 
-// Carrega o .env localizado na raiz do projeto
+// Carrega as variáveis de ambiente do arquivo .env.
 $dotenv = Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->safeLoad();
 
-function gerarTokenMetabase(): string
+
+/**
+ * Gera um token JWT para incorporar um dashboard do Metabase.
+ *
+ * @param int $dashboardId ID do dashboard autorizado.
+ * @return string Token JWT assinado com HS256.
+ */
+function gerarTokenMetabase(int $dashboardId): string
 {
     $secret = $_ENV['METABASE_SECRET_KEY']
         ?? getenv('METABASE_SECRET_KEY')
@@ -23,10 +30,11 @@ function gerarTokenMetabase(): string
     }
 
     $payload = [
-        'resource' => ['dashboard' => 3],
+        'resource' => ['dashboard' => $dashboardId],
         'params' => (object) [],
-        'exp' => time() + (60 * 10)
+        'exp' => time() + (60 * 10),
     ];
 
     return JWT::encode($payload, $secret, 'HS256');
 }
+

@@ -1,6 +1,7 @@
 {
     "require": {
         "firebase/php-jwt": "*",
-        "vlucas/phpdotenv": "*"
+        "vlucas/phpdotenv": "*",
+        "dompdf/dompdf": "^3.1"
     }
 }

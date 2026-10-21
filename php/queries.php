@@ -1,8 +1,13 @@
 <?php
 
-require_once 'database.php';
+require_once __DIR__ . '/database.php';
 
-
+/**
+ * Retorna os municípios cadastrados, ordenados pelo nome.
+ *
+ * @param PDO $pdo Conexão ativa com o banco de dados.
+ * @return array Lista de municípios com ID e nome.
+ */
 function getMunicipios(PDO $pdo): array
 {
     $sql = "
@@ -18,7 +23,14 @@ function getMunicipios(PDO $pdo): array
     return $stmt->fetchAll();
 }
 
-
+/**
+ * Retorna os trechos de balneabilidade, ordenados pelo nome,
+ * opcionalmente filtrados por município.
+ *
+ * @param PDO $pdo Conexão ativa com o banco de dados.
+ * @param int|null $municipioId ID do município ou null para não filtrar.
+ * @return array Lista de trechos encontrados.
+ */
 function getTrechos(PDO $pdo, ?int $municipioId = null): array
 {
     $sql = "
@@ -45,7 +57,14 @@ function getTrechos(PDO $pdo, ?int $municipioId = null): array
     return $stmt->fetchAll();
 }
 
-
+/**
+ * Retorna os trechos de balneabilidade, com a classificação mais recente
+ * opcionalmente filtrados por trecho.
+ *
+ * @param PDO $pdo Conexão ativa com o banco de dados.
+ * @param int|null $trechoId ID do trecho ou null para não filtrar.
+ * @return array Lista de trechos encontrados.
+ */
 function getSituacaoAtual(PDO $pdo, ?int $trechoId = null): array
 {
     $sql = "
@@ -75,7 +94,12 @@ function getSituacaoAtual(PDO $pdo, ?int $trechoId = null): array
     return $stmt->fetchAll();
 }
 
-
+/**
+ * Retorna os trechos de balneabilidade, com a classificação histórica
+ *
+ * @param PDO $pdo Conexão ativa com o banco de dados.
+ * @return array Lista de trechos encontrados.
+ */
 function getHistorico(PDO $pdo, int $trechoId): array
 {
     $sql = "

@@ -49,3 +49,41 @@ function validarIdOpcional(array $parametros, string $nome): ?int
 
     return $id;
 }
+
+
+/**
+ * Executa uma consulta e trata falhas específicas do PDO.
+ *
+ * Registra os detalhes técnicos da exceção no log e retorna
+ * um resultado estruturado para que a página possa decidir
+ * como apresentar a visualização ao usuário.
+ *
+ * @param callable $consulta Função que executa a consulta e retorna os dados.
+ * @param string $contexto Identificação da visualização para o log.
+ *
+ * @return array{
+ *     sucesso: bool,
+ *     dados: mixed
+ * } Indica se a consulta foi executada e contém os dados retornados.
+ */
+function executarConsultaComSeguranca(
+    callable $consulta,
+    string $contexto
+): array {
+    try {
+        return [
+            'sucesso' => true,
+            'dados' => $consulta()
+        ];
+    } catch (PDOException $e) {
+        error_log(
+            "Falha ao carregar {$contexto}: "
+            . $e->getMessage()
+        );
+
+        return [
+            'sucesso' => false,
+            'dados' => []
+        ];
+    }
+}

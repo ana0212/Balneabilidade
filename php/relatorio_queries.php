@@ -121,7 +121,6 @@ function getDadosGraficoSituacao(PDO $pdo, string $semana): array
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-
 /**
  * Retorna a quantidade de trechos por classificação histórica
  * na semana selecionada.
@@ -501,5 +500,28 @@ function getDadosEvolucaoQuantitativo(
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+/**
+ * Retorna a os trechos disponíveis
+ *
+ * @param PDO $pdo Conexão ativa com o banco de dados.
+ * @return array Dados históricos para o gráfico de evolução.
+ */
+function getTrechosEvolucao(PDO $pdo): array
+{
+    $modelo = getSqlModeloRelatorio();
 
+    $sql = "
+        WITH modelo AS (
+            $modelo
+        )
+        SELECT DISTINCT trecho_nome
+        FROM modelo
+        WHERE trecho_nome IS NOT NULL
+        ORDER BY trecho_nome ASC
+    ";
+
+    $stmt = $pdo->query($sql);
+
+    return $stmt->fetchAll(PDO::FETCH_COLUMN);
+}
 

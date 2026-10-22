@@ -3,163 +3,229 @@
 require_once __DIR__ . '/relatorio_queries.php';
 require_once  __DIR__ . '/helpers.php';
 
-// Busca as semanas disponíveis no modelo
-$semanas = getSemanasDisponiveis($pdo);
-
-// Identifica a semana selecionada
-$semanaSelecionada = $_GET['semana_referencia'] ?? '';
-
-if (
-    $semanaSelecionada === '' ||
-    !in_array($semanaSelecionada, $semanas, true)
-) {
-    $semanaSelecionada = $semanas[0] ?? '';
-}
-
-// Busca os indicadores da semana selecionada
-if ($semanaSelecionada !== '') {
-    $indicadores = getIndicadoresPanorama(
-        $pdo,
-        $semanaSelecionada
+try {
+    // TESTE TEMPORÁRIO — remover depois da validação
+    throw new RuntimeException(
+        'Falha simulada para testar o tratamento centralizado.'
     );
-} else {
-    $indicadores = [
-        'total_trechos' => 0,
-        'total_municipios' => 0,
-        'total_analises' => 0,
-        'trechos_excelentes' => 0
-    ];
-}
+    // Busca as semanas disponíveis no modelo
+    $semanas = getSemanasDisponiveis($pdo);
 
-// Busca dados para gráfico de situação para banho
-$dadosSituacao = [];
+    // Identifica a semana selecionada
+    $semanaSelecionada = $_GET['semana_referencia'] ?? '';
 
-if ($semanaSelecionada !== '') {
-    $dadosSituacao = getDadosGraficoSituacao(
-        $pdo,
-        $semanaSelecionada
-    );
-}
+    if (
+        $semanaSelecionada === '' ||
+        !in_array($semanaSelecionada, $semanas, true)
+    ) {
+        $semanaSelecionada = $semanas[0] ?? '';
+    }
 
-// Busca dados para gráficos de barra, classificação e periodicidade
-$dadosClassificacao = [];
-$dadosPeriodicidade = [];
-
-if ($semanaSelecionada !== '') {
-    $dadosClassificacao = getDadosGraficoClassificacao(
-        $pdo,
-        $semanaSelecionada
-    );
-
-    $dadosPeriodicidade = getDadosGraficoPeriodicidade(
-        $pdo,
-        $semanaSelecionada
-    );
-}
-
-// Busca os dados para o gráfico de classificação por município
-$dadosClassificacaoMunicipio = [];
-
-if ($semanaSelecionada !== '') {
-    $dadosClassificacaoMunicipio =
-        getDadosGraficoClassificacaoMunicipio(
+    /**
+     * Busca os indicadores do panorama semanal.
+     * Esta consulta ainda usa tratamento direto; vamos decidir
+     * depois se ela deve ser isolada ou tratada como essencial.
+     */
+    if ($semanaSelecionada !== '') {
+        $indicadores = getIndicadoresPanorama(
             $pdo,
             $semanaSelecionada
         );
-}
-
-// Busca os dados para o gráfico de mudanças na classificação
-$dadosMudancas = [];
-
-if ($semanaSelecionada !== '') {
-    $dadosMudancas = getDadosGraficoMudancas(
-        $pdo,
-        $semanaSelecionada
-    );
-}
-
-// Busca os dados para a tabela de mudanças
-$dadosTabelaMudancas = [];
-
-if ($semanaSelecionada !== '') {
-    $dadosTabelaMudancas = getDadosTabelaMudancas(
-        $pdo,
-        $semanaSelecionada
-    );
-}
-
-// Busca os dados para a tabela de análises da semana
-$classificacaoTabela = $_GET['classificacao_tabela'] ?? '';
-$municipioTabela = $_GET['municipio_tabela'] ?? '';
-
-$classificacoesTabela = [];
-$municipiosTabela = [];
-$dadosTabelaTrechos = [];
-
-if ($semanaSelecionada !== '') {
-    $classificacoesTabela = getClassificacoesFiltroTabela(
-        $pdo,
-        $semanaSelecionada
-    );
-
-    $municipiosTabela = getMunicipiosFiltroTabela(
-        $pdo,
-        $semanaSelecionada
-    );
-
-    // Valida os filtros recebidos
-    if (!in_array($classificacaoTabela, $classificacoesTabela, true)) {
-        $classificacaoTabela = '';
+    } else {
+        $indicadores = [
+            'total_trechos' => 0,
+            'total_municipios' => 0,
+            'total_analises' => 0,
+            'trechos_excelentes' => 0
+        ];
     }
 
-    if (!in_array($municipioTabela, $municipiosTabela, true)) {
-        $municipioTabela = '';
-    }
-
-    $dadosTabelaTrechos = getDadosTabelaTrechosSemana(
-        $pdo,
-        $semanaSelecionada,
-        $classificacaoTabela,
-        $municipioTabela
-    );
-}
-
-// Busca os dados para o gráfico de evolução do quantitativo
-$trechoEvolucao = $_GET['trecho_evolucao'] ?? '';
-
-$dadosEvolucao = [];
-$trechosEvolucao = [];
-
-if ($semanaSelecionada !== '') {
-    $dadosEvolucao = getDadosEvolucaoQuantitativo(
-        $pdo,
-        $semanaSelecionada,
-        $trechoEvolucao
-    );
-
-    $modelo = getSqlModeloRelatorio();
-
-    $sqlTrechos = "
-        WITH modelo AS (
-            $modelo
-        )
-        SELECT DISTINCT trecho_nome
-        FROM modelo
-        WHERE trecho_nome IS NOT NULL
-        ORDER BY trecho_nome ASC
-    ";
-
-    $trechosEvolucao = $pdo
-        ->query($sqlTrechos)
-        ->fetchAll(PDO::FETCH_COLUMN);
-
-    if (!in_array($trechoEvolucao, $trechosEvolucao, true)) {
-        $trechoEvolucao = '';
-        $dadosEvolucao = getDadosEvolucaoQuantitativo(
+    // Busca dados para o gráfico de situação para banho
+    $resultadoSituacao = executarConsultaComSeguranca(
+        fn() => getDadosGraficoSituacao(
             $pdo,
             $semanaSelecionada
+        ),
+        'gráfico de situação'
+    );
+
+    $dadosSituacao = $resultadoSituacao['dados'];
+    $erroDadosSituacao = !$resultadoSituacao['sucesso'];
+
+    // Busca dados para o gráfico de classificação
+    $resultadoClassificacao = executarConsultaComSeguranca(
+        fn() => getDadosGraficoClassificacao(
+            $pdo,
+            $semanaSelecionada
+        ),
+        'gráfico de classificação'
+    );
+
+    $dadosClassificacao = $resultadoClassificacao['dados'];
+    $erroDadosClassificacao = !$resultadoClassificacao['sucesso'];
+
+    // Busca dados para o gráfico de periodicidade
+    $resultadoPeriodicidade = executarConsultaComSeguranca(
+        fn() => getDadosGraficoPeriodicidade(
+            $pdo,
+            $semanaSelecionada
+        ),
+        'gráfico de periodicidade'
+    );
+
+    $dadosPeriodicidade = $resultadoPeriodicidade['dados'];
+    $erroDadosPeriodicidade = !$resultadoPeriodicidade['sucesso'];
+
+    // Busca dados para o gráfico de classificação por município
+    $resultadoClassificacaoMunicipio = executarConsultaComSeguranca(
+        fn() => getDadosGraficoClassificacaoMunicipio(
+            $pdo,
+            $semanaSelecionada
+        ),
+        'gráfico de classificação por município'
+    );
+
+    $dadosClassificacaoMunicipio = $resultadoClassificacaoMunicipio['dados'];
+    $erroDadosClassificacaoMunicipio =
+        !$resultadoClassificacaoMunicipio['sucesso'];
+
+    // Busca dados para o gráfico de mudanças na classificação
+    $resultadoMudancas = executarConsultaComSeguranca(
+        fn() => getDadosGraficoMudancas(
+            $pdo,
+            $semanaSelecionada
+        ),
+        'gráfico de mudanças na classificação'
+    );
+
+    $dadosMudancas = $resultadoMudancas['dados'];
+    $erroDadosMudancas = !$resultadoMudancas['sucesso'];
+
+    // Busca dados para a tabela de mudanças
+    $resultadoTabelaMudancas = executarConsultaComSeguranca(
+        fn() => getDadosTabelaMudancas(
+            $pdo,
+            $semanaSelecionada
+        ),
+        'tabela de mudanças'
+    );
+
+    $dadosTabelaMudancas = $resultadoTabelaMudancas['dados'];
+    $erroTabelaMudancas = !$resultadoTabelaMudancas['sucesso'];
+
+    // Busca os dados para a tabela de análises da semana
+    $classificacaoTabela = $_GET['classificacao_tabela'] ?? '';
+    $municipioTabela = $_GET['municipio_tabela'] ?? '';
+
+    $classificacoesTabela = [];
+    $municipiosTabela = [];
+    $dadosTabelaTrechos = [];
+
+    $erroClassificacoesTabela = false;
+    $erroMunicipiosTabela = false;
+    $erroTabelaTrechos = false;
+
+    if ($semanaSelecionada !== '') {
+
+        // Busca as opções de classificação para o filtro
+        $resultadoClassificacoesTabela = executarConsultaComSeguranca(
+            fn() => getClassificacoesFiltroTabela(
+                $pdo,
+                $semanaSelecionada
+            ),
+            'filtro de classificação da tabela'
         );
+
+        $classificacoesTabela = $resultadoClassificacoesTabela['dados'];
+        $erroClassificacoesTabela = !$resultadoClassificacoesTabela['sucesso'];
+
+        // Busca as opções de município para o filtro
+        $resultadoMunicipiosTabela = executarConsultaComSeguranca(
+            fn() => getMunicipiosFiltroTabela(
+                $pdo,
+                $semanaSelecionada
+            ),
+            'filtro de município da tabela'
+        );
+
+        $municipiosTabela = $resultadoMunicipiosTabela['dados'];
+        $erroMunicipiosTabela = !$resultadoMunicipiosTabela['sucesso'];
+
+        // Valida os filtros recebidos pelo GET
+        if (!in_array($classificacaoTabela, $classificacoesTabela, true)) {
+            $classificacaoTabela = '';
+        }
+
+        if (!in_array($municipioTabela, $municipiosTabela, true)) {
+            $municipioTabela = '';
+        }
+
+        // Busca os dados da tabela com os filtros validados
+        $resultadoTabelaTrechos = executarConsultaComSeguranca(
+            fn() => getDadosTabelaTrechosSemana(
+                $pdo,
+                $semanaSelecionada,
+                $classificacaoTabela,
+                $municipioTabela
+            ),
+            'tabela de análises da semana'
+        );
+
+        $dadosTabelaTrechos = $resultadoTabelaTrechos['dados'];
+        $erroTabelaTrechos = !$resultadoTabelaTrechos['sucesso'];
     }
+
+
+    // Busca os dados para o gráfico de evolução do quantitativo
+    $trechoEvolucao = $_GET['trecho_evolucao'] ?? '';
+
+    $dadosEvolucao = [];
+    $trechosEvolucao = [];
+
+    $erroTrechosEvolucao = false;
+    $erroDadosEvolucao = false;
+
+    if ($semanaSelecionada !== '') {
+
+        // Busca os trechos disponíveis para o filtro
+        $resultadoTrechosEvolucao = executarConsultaComSeguranca(
+            fn() => getTrechosEvolucao($pdo),
+            'opções de trechos do gráfico de evolução'
+        );
+
+        $trechosEvolucao = $resultadoTrechosEvolucao['dados'];
+        $erroTrechosEvolucao = !$resultadoTrechosEvolucao['sucesso'];
+
+        // Valida o trecho recebido pelo GET
+        if (!in_array($trechoEvolucao, $trechosEvolucao, true)) {
+            $trechoEvolucao = '';
+        }
+
+        // Busca os dados do gráfico com o filtro validado
+        $resultadoDadosEvolucao = executarConsultaComSeguranca(
+            fn() => getDadosEvolucaoQuantitativo(
+                $pdo,
+                $semanaSelecionada,
+                $trechoEvolucao
+            ),
+            'gráfico de evolução do quantitativo'
+        );
+
+        $dadosEvolucao = $resultadoDadosEvolucao['dados'];
+        $erroDadosEvolucao = !$resultadoDadosEvolucao['sucesso'];
+    }
+} catch (Throwable $e) {
+    error_log(
+        'Falha inesperada ao carregar relatório semanal: '
+        . $e->getMessage()
+    );
+
+    http_response_code(500);
+
+    exit(
+        'Não foi possível carregar o relatório. '
+        . 'Tente novamente mais tarde.'
+    );
 }
 ?>
 
@@ -242,7 +308,10 @@ if ($semanaSelecionada !== '') {
             </p>
 
             <div class="grafico-rosca">
-                <canvas id="graficoSituacao"></canvas>
+                <?php if ($erroDadosSituacao): ?>
+                    <p>Não foi possível carregar este gráfico.</p>
+                <?php endif; ?>
+                <canvas id="graficoSituacao" <?= $erroDadosSituacao ? 'style="display: none;"' : '' ?>></canvas>
             </div>
         </div>
 
@@ -289,7 +358,10 @@ if ($semanaSelecionada !== '') {
             </p>
 
             <div class="grafico-barras-area">
-                <canvas id="graficoClassificacao"></canvas>
+                <?php if ($erroDadosClassificacao): ?>
+                    <p>Não foi possível carregar este gráfico.</p>
+                <?php endif; ?>
+                <canvas id="graficoClassificacao" <?= $erroDadosClassificacao ? 'style="display: none;"' : '' ?>></canvas>
             </div>
         </div>
         
@@ -302,7 +374,10 @@ if ($semanaSelecionada !== '') {
             </p>
 
             <div class="grafico-barras-area">
-                <canvas id="graficoPeriodicidade"></canvas>
+                <?php if ($erroDadosPeriodicidade): ?>
+                    <p>Não foi possível carregar este gráfico.</p>
+                <?php endif; ?>
+                <canvas id="graficoPeriodicidade" <?= $erroDadosPeriodicidade ? 'style="display: none;"' : '' ?>></canvas>
             </div>
         </div>
     </section>
@@ -316,7 +391,10 @@ if ($semanaSelecionada !== '') {
         </p>
 
         <div class="grafico-municipios-area">
-            <canvas id="graficoClassificacaoMunicipio"></canvas>
+            <?php if ($erroDadosClassificacaoMunicipio): ?>
+                <p>Não foi possível carregar este gráfico.</p>
+            <?php endif; ?>
+            <canvas id="graficoClassificacaoMunicipio" <?= $erroDadosClassificacaoMunicipio ? 'style="display: none;"' : '' ?>></canvas>
         </div>
     </section>
 
@@ -329,7 +407,10 @@ if ($semanaSelecionada !== '') {
         </p>
 
         <div class="grafico-mudancas-area">
-            <canvas id="graficoMudancas"></canvas>
+            <?php if ($erroDadosMudancas): ?>
+                <p>Não foi possível carregar este gráfico.</p>
+            <?php endif; ?>
+            <canvas id="graficoMudancas" <?= $erroDadosMudancas ? 'style="display: none;"' : '' ?>></canvas>
         </div>
     </section>
     
@@ -341,6 +422,9 @@ if ($semanaSelecionada !== '') {
             Análises com mudança de classificação na semana selecionada.
         </p>
 
+        <?php if ($erroTabelaMudancas): ?>
+            <p>Não foi possível carregar a tabela de mudanças.</p>
+        <?php else: ?>
         <div class="tabela-responsiva">
             <table class="tabela-mudancas">
                 <thead>
@@ -452,6 +536,7 @@ if ($semanaSelecionada !== '') {
                 </tbody>
             </table>
         </div>
+        <?php endif; ?>
     </section>
 
     <!-- Tabela - Trechos analisados na semana selecionada -->
@@ -472,7 +557,10 @@ if ($semanaSelecionada !== '') {
             <div class="campo-filtro">
                 <label for="classificacao_tabela">Classificação</label>
 
-                <select name="classificacao_tabela" id="classificacao_tabela">
+                <?php if ($erroClassificacoesTabela): ?>
+                    <p>Não foi possível carregar as opções de classificação.</p>
+                <?php endif; ?>
+                <select name="classificacao_tabela" id="classificacao_tabela" <?= $erroClassificacoesTabela ? 'disabled' : '' ?>>
                     <option value="">Todas as classificações</option>
 
                     <?php foreach ($classificacoesTabela as $classificacao): ?>
@@ -491,7 +579,10 @@ if ($semanaSelecionada !== '') {
             <div class="campo-filtro">
                 <label for="municipio_tabela">Município</label>
 
-                <select name="municipio_tabela" id="municipio_tabela">
+                <?php if ($erroMunicipiosTabela): ?>
+                    <p>Não foi possível carregar as opções de município.</p>
+                <?php endif; ?>
+                <select name="municipio_tabela" id="municipio_tabela" <?= $erroMunicipiosTabela ? 'disabled' : '' ?>>
                     <option value="">Todos os municípios</option>
 
                     <?php foreach ($municipiosTabela as $municipio): ?>
@@ -516,6 +607,9 @@ if ($semanaSelecionada !== '') {
             </div>
         </form>
 
+        <?php if ($erroTabelaTrechos): ?>
+            <p>Não foi possível carregar a tabela de análises da semana.</p>
+        <?php else: ?>
         <div class="tabela-responsiva">
             <table class="tabela-mudancas tabela-trechos">
                 <thead>
@@ -594,6 +688,7 @@ if ($semanaSelecionada !== '') {
                 </tbody>
             </table>
         </div>
+        <?php endif; ?>
     </section>
     
     <!-- Gráfico de Linha - Evolução do quantitativo -->
@@ -616,9 +711,14 @@ if ($semanaSelecionada !== '') {
 
             <label for="trecho_evolucao">Trecho monitorado</label>
 
+            <?php if ($erroTrechosEvolucao): ?>
+                <p>Não foi possível carregar as opções de trechos.</p>
+            <?php endif; ?>
+
             <select
                 name="trecho_evolucao"
                 id="trecho_evolucao"
+                <?= $erroTrechosEvolucao ? 'disabled' : '' ?>
             >
                 <option value="">Todos os trechos</option>
 
@@ -636,11 +736,13 @@ if ($semanaSelecionada !== '') {
         </form>
 
         <div class="grafico-evolucao-area">
-            <canvas id="graficoEvolucao"></canvas>
+            <?php if ($erroDadosEvolucao): ?>
+                <p>Não foi possível carregar este gráfico.</p>
+            <?php endif; ?>
+            <canvas id="graficoEvolucao" <?= $erroDadosEvolucao ? 'style="display: none;"' : '' ?>></canvas>
         </div>
     </section>
 </div>
-
 
 <!-- Biblioteca utilizada para desenhar os gráficos. -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

@@ -4,10 +4,6 @@ require_once __DIR__ . '/relatorio_queries.php';
 require_once  __DIR__ . '/helpers.php';
 
 try {
-    // TESTE TEMPORÁRIO — remover depois da validação
-    throw new RuntimeException(
-        'Falha simulada para testar o tratamento centralizado.'
-    );
     // Busca as semanas disponíveis no modelo
     $semanas = getSemanasDisponiveis($pdo);
 

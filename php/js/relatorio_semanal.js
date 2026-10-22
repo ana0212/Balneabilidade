@@ -44,11 +44,19 @@ function inicializarGraficos() {
 
                 datasets: [{
                     data: dadosSituacao.map(item => Number(item.total)),
-                    backgroundColor: [
-                        '#2ecc71',
-                        '#e74c3c',
-                        '#f1c40f'
-                    ]
+                    backgroundColor: dadosSituacao.map(item => {
+                        const situacao = item.Situacao.trim().toLowerCase();
+
+                        if (situacao === 'própria') {
+                            return '#2ecc71'; // Verde
+                        }
+
+                        if (situacao === 'imprópria') {
+                            return '#e74c3c'; // Vermelho
+                        }
+
+                        return '#f1c40f'; // Outras situações
+                    })
                 }]
             },
 

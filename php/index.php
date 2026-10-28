@@ -74,7 +74,7 @@ if ($trechoId !== null) {
                 </p>
             </div>
 
-            <a href="dashboard.php" class="dashboard-button">
+            <a href="dashboard2.php" class="dashboard-button">
                 Acessar dashboard
             </a>
         </div>
